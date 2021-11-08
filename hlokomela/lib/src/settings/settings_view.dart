@@ -6,12 +6,28 @@ import 'settings_controller.dart';
 ///
 /// When a user changes a setting, the SettingsController is updated and
 /// Widgets that listen to the SettingsController are rebuilt.
-class SettingsView extends StatelessWidget {
+class SettingsView extends StatefulWidget {
   const SettingsView({Key? key, required this.controller}) : super(key: key);
-
   static const routeName = '/settings';
 
   final SettingsController controller;
+
+  @override
+  State<SettingsView> createState() => _SettingsViewState();
+}
+
+class _SettingsViewState extends State<SettingsView> {
+  bool isActive = false;
+
+  @override
+  void initState() {
+    widget.controller.loadSettingsBool().then((value) => {
+      setState(() {
+        isActive = value;
+      })
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,28 +37,31 @@ class SettingsView extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        // Glue the SettingsController to the theme selection DropdownButton.
-        //
-        // When a user selects a theme from the dropdown list, the
-        // SettingsController is updated, which rebuilds the MaterialApp.
-        child: DropdownButton<ThemeMode>(
-          // Read the selected themeMode from the controller
-          value: controller.themeMode,
-          // Call the updateThemeMode method any time the user selects a theme.
-          onChanged: controller.updateThemeMode,
-          items: const [
-            DropdownMenuItem(
-              value: ThemeMode.system,
-              child: Text('System Theme'),
+        child: Column(
+          children: <Widget>[
+            const Center(
+              child: Text('Settings'),
             ),
-            DropdownMenuItem(
-              value: ThemeMode.light,
-              child: Text('Light Theme'),
+            Row(
+              children: [
+                const Text('Dark theme:'),
+                Switch(
+                  value: isActive,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value) {
+                        widget.controller.updateThemeMode(ThemeMode.dark);
+                      } else {
+                        widget.controller.updateThemeMode(ThemeMode.light);
+                      }
+                      isActive = value;
+                    });
+                  },
+                  activeTrackColor: Colors.yellow,
+                  activeColor: Colors.orangeAccent,
+                ),
+              ],
             ),
-            DropdownMenuItem(
-              value: ThemeMode.dark,
-              child: Text('Dark Theme'),
-            )
           ],
         ),
       ),

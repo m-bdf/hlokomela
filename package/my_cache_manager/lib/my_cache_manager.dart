@@ -5,10 +5,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 class MyCacheManager {
 
   static Future<bool?> readBool(String key) async {
-    final prefs = await SharedPreferences.getInstance();
-    bool? res = prefs.getBool(key);
-    if (res != null) {
-      return res;
+    final SharedPreferences? prefs = await SharedPreferences.getInstance();
+
+    if (prefs != null) {
+      bool? res = prefs.getBool(key);
+      if (res != null) {
+        return res;
+      } else {
+        return null;
+      }
     } else {
       return null;
     }

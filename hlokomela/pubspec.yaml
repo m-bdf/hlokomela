@@ -12,6 +12,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  my_cache_manager:
+    path: ../package/my_cache_manager
+
   flutter_localizations:
     sdk: flutter
 

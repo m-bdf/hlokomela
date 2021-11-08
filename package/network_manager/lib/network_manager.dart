@@ -69,7 +69,7 @@ class NetworkManager {
     return SnackBar(
       content: Text('Error: $error'),
       behavior: SnackBarBehavior.floating,
-      duration: Duration(seconds : 3),
+      duration: const Duration(seconds : 3),
     );
   }
 }
