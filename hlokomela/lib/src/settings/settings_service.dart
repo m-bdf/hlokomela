@@ -23,7 +23,6 @@ class SettingsService {
       MyCacheManager.writeBool("ThemeIsDark", false);
       return false;
     } else {
-      print(value);
       return value;
     }
   }
