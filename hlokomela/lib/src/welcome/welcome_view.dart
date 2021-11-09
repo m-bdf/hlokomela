@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hlokomela/src/login/login_view.dart';
 import 'package:hlokomela/src/widget/custom_button.dart';
 
 class WelcomeView extends StatelessWidget {
@@ -23,13 +24,17 @@ class WelcomeView extends StatelessWidget {
             children: [
               CustomButton(
                 child: const Text("Login"),
-                onPress: () {},
+                onPress: () {
+                  Navigator.of(context).pushNamed(LoginRegisterView.routeNameLogin);
+                },
                 width: size.width * 0.3,
               ),
               SizedBox(width: size.width * 0.1),
               CustomButton(
                 child: const Text("Register"),
-                onPress: () {},
+                onPress: () {
+                  Navigator.of(context).pushNamed(LoginRegisterView.routeNameRegister);
+                },
                 width: size.width * 0.3,
                 backgroundColor: Theme.of(context).backgroundColor,
               ),

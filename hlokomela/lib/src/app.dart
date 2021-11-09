@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hlokomela/src/welcome/welcome_view.dart';
 
+import 'login/login_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
@@ -45,6 +46,10 @@ class MyApp extends StatelessWidget {
                     return SettingsView(controller: settingsController);
                   case WelcomeView.routeName:
                     return const WelcomeView();
+                  case LoginRegisterView.routeNameLogin:
+                    return const LoginRegisterView(type: "Login",);
+                  case LoginRegisterView.routeNameRegister:
+                    return const LoginRegisterView(type: "Register",);
                   default:
                     return const WelcomeView();
                 }

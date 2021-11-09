@@ -14,6 +14,8 @@ dependencies:
     sdk: flutter
   my_cache_manager:
     path: ../package/my_cache_manager
+  network_manager:
+    path: ../package/network_manager
 
   flutter_localizations:
     sdk: flutter
