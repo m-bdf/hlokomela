@@ -6,45 +6,31 @@ import 'package:network_manager/network_manager.dart';
 class CallApi {
   static String? token;
 
-  static Future<Response> get(BuildContext context, String route, {Map<String, String>? headers}) async {
+  static Future<dynamic> get(BuildContext context, String route, {Map<String, String>? headers}) async {
     if (headers != null && token != null) {
-      headers["token"] = token!;
+      headers["Authorization"] = "Bearer " + token!;
     }
-    return Response.fromJson(jsonDecode(await NetworkManager.get(context, route)));
+    return jsonDecode(await NetworkManager.get(context, route, headers: headers));
   }
 
-  static Future<Response> post(BuildContext context, String route, {Map<String, String>? body, Map<String, String>? headers}) async {
+  static Future<dynamic> post(BuildContext context, String route, {Map<String, String>? body, Map<String, String>? headers}) async {
     if (headers != null && token != null) {
-      headers["token"] = token!;
+      headers["Authorization"] = "Bearer " + token!;
     }
-    return Response.fromJson(jsonDecode(await NetworkManager.post(context, route, body : body, headers : headers)));
+    return jsonDecode(await NetworkManager.post(context, route, body : body, headers : headers));
   }
 
-  static Future<Response> put(BuildContext context, String route, {Map<String, String>? body, Map<String, String>? headers}) async {
+  static Future<dynamic> put(BuildContext context, String route, {Map<String, String>? body, Map<String, String>? headers}) async {
     if (headers != null && token != null) {
-      headers["token"] = token!;
+      headers["Authorization"] = "Bearer " + token!;
     }
-    return Response.fromJson(jsonDecode(await NetworkManager.put(context, route, body : body, headers : headers)));
+    return jsonDecode(await NetworkManager.put(context, route, body : body, headers : headers));
   }
 
-  static Future<Response> delete(BuildContext context, String route, {Map<String, String>? body, Map<String, String>? headers}) async {
+  static Future<dynamic> delete(BuildContext context, String route, {Map<String, String>? body, Map<String, String>? headers}) async {
     if (headers != null && token != null) {
-      headers["token"] = token!;
+      headers["Authorization"] = "Bearer " + token!;
     }
-    return Response.fromJson(jsonDecode(await NetworkManager.delete(context, route, body : body, headers : headers)));
-  }
-}
-
-class Response {
-  final Map<String, dynamic> received;
-
-  Response({
-    required this.received,
-  });
-
-  factory Response.fromJson(Map<String, dynamic> json) {
-    return Response(
-      received: json['received'],
-    );
+    return jsonDecode(await NetworkManager.delete(context, route, body : body, headers : headers));
   }
 }

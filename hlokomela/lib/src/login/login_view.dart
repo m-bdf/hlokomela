@@ -21,26 +21,33 @@ class _LoginRegisterViewViewState extends State<LoginRegisterView> {
   ButtonState buttonState = ButtonState.normal;
 
   sendLoginRequest() {
+    Map<String, String> body = {
+      'username': usernameController.text,
+      'password': passwordController.text,
+    };
     setState(() {
       buttonState = ButtonState.inProgress;
     });
-    CallApi.get(context, "http://192.168.178.65:5000/").then((value) => {
-      setState(() {
-        buttonState = ButtonState.normal;
-      })
-    }).catchError(
-      (error) => {
-        setState(() {
-          buttonState = ButtonState.error;
-          print(error);
-        })
-      });
+    CallApi.post(context, "http://ab98-2003-cd-7711-1600-3ed-15bc-29a8-36ca.ngrok.io/" + widget.type.toLowerCase(), body: body)
+        .then((value) => {
+              setState(() {
+                print(value);
+                buttonState = ButtonState.normal;
+              })
+            })
+        .catchError((error) => {
+              setState(() {
+                buttonState = ButtonState.error;
+                print(error);
+              })
+            });
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
         child: Column(
@@ -50,15 +57,14 @@ class _LoginRegisterViewViewState extends State<LoginRegisterView> {
               flex: 1,
               child: Center(
                 child: Text(widget.type,
-                    style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold)),
               ),
             ),
             Expanded(
               flex: 3,
-              child: Wrap(
-                children: [
-                  Card(
+              child: Wrap(children: [
+                Card(
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(12.0),
@@ -77,31 +83,34 @@ class _LoginRegisterViewViewState extends State<LoginRegisterView> {
                             ),
                           ),
                           CustomCenter(
-                            padding: const EdgeInsets.only(top: 12,),
+                            padding: const EdgeInsets.only(
+                              top: 12,
+                            ),
                             child: CustomTextField(
+                              isPassword: true,
                               labelText: "Password",
                               hintText: "Enter your password",
                               controller: passwordController,
                             ),
                           ),
                           CustomCenter(
-                            padding: const EdgeInsets.only(top: 12,),
+                            padding: const EdgeInsets.only(
+                              top: 12,
+                            ),
                             child: ProgressButton(
-                              buttonState: buttonState,
-                              child: Text(
-                                widget.type,
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                              onPressed: () {
-                                sendLoginRequest();
-                              }),
+                                buttonState: buttonState,
+                                child: Text(
+                                  widget.type,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  sendLoginRequest();
+                                }),
                           ),
                         ],
                       ),
-                    )
-                  ),
-                ]
-              ),
+                    )),
+              ]),
             )
           ],
         ),

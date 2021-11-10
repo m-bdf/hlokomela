@@ -7,17 +7,19 @@ class CustomTextField extends StatelessWidget {
     this.hintText,
     this.controller,
     this.border,
+    this.isPassword,
   }) : super(key: key);
 
   final String? labelText;
   final String? hintText;
+  final bool? isPassword;
   final OutlineInputBorder? border;
   final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      obscureText: true,
+      obscureText: isPassword ?? false,
       controller: controller,
       decoration: InputDecoration(
           border: border ?? const OutlineInputBorder(),
