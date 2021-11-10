@@ -33,9 +33,9 @@ def check_if_login():
     for user in users:
       if user['username'] == username and user['password'] == password :
           results.append(user)
-    return jsonify(results)
+    return jsonify(results), 400
   else:
-    return jsonify({"error": "no json data"})
+    return jsonify({"error": "no json data"}), 400
   
 
 @app.route('/register', methods=['POST'])
@@ -47,14 +47,14 @@ def store_it():
       username = json['username']
       password = json['password']
     else:
-      return results
+      return results, 401
     for user in users:
       if user['username'] == username :
         return jsonify({"error": "username already exists"})
     users.append({'username': username, 'password': password})
     return jsonify(users)
   else:
-    return jsonify({"error": "no json data"})
+    return jsonify({"error": "no json data"}), 400
 
 
 @app.route('/note', methods=['GET', 'POST', 'DELETE'])
@@ -68,25 +68,25 @@ def note():
         title = json['title']
         content = json['content']
       else:
-        return jsonify({"error": "no json data"})
+        return jsonify({"error": "no json data"}), 400
       notes.append({'title': title, 'content': content})
       return jsonify(notes)
     else:
-      return jsonify({"error": "no json data"})
+      return jsonify({"error": "no json data"}), 400
   if request.method == 'DELETE':
     if request.json:
       json = request.json
       if 'title' in json :
         title = json['title']
       else:
-        return jsonify({"error": "no json data"})
+        return jsonify({"error": "no json data"}), 400
       try:  
         notes.pop(notes.index(json))
       except:
-        return jsonify({"error": "no such note"})
+        return jsonify({"error": "no such note"}), 404
       return jsonify(notes)
     else:
-      return jsonify({"error": "no json data"})
+      return jsonify({"error": "no json data"}), 400
 
 
 app.run()
