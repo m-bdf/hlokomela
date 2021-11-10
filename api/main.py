@@ -1,7 +1,6 @@
-import flask
-from flask import request, jsonify
+from flask import Flask, request
 
-app = flask.Flask(__name__)
+app = Flask(__name__)
 app.config["DEBUG"] = True
 
 users = [
@@ -18,7 +17,7 @@ def home():
 
 @app.route('/users', methods=['GET'])
 def api_all():
-    return jsonify(users)
+    return users
 
 @app.route('/login', methods=['POST'])
 def check_if_login():
@@ -33,9 +32,9 @@ def check_if_login():
     for user in users:
       if user['username'] == username and user['password'] == password :
           results.append(user)
-    return jsonify(results), 400
+    return results, 400
   else:
-    return jsonify({"error": "no json data"}), 400
+    return {"error": "no json data"}, 400
   
 
 @app.route('/register', methods=['POST'])
@@ -50,17 +49,17 @@ def store_it():
       return results, 401
     for user in users:
       if user['username'] == username :
-        return jsonify({"error": "username already exists"})
+        return {"error": "username already exists"}
     users.append({'username': username, 'password': password})
-    return jsonify(users)
+    return users
   else:
-    return jsonify({"error": "no json data"}), 400
+    return {"error": "no json data"}, 400
 
 
 @app.route('/note', methods=['GET', 'PUT', 'DELETE'])
 def note():
   if request.method == 'GET':
-    return jsonify(notes);
+    return notes;
   if request.method == 'PUT':
     if request.json:
       json = request.json
@@ -68,25 +67,25 @@ def note():
         title = json['title']
         content = json['content']
       else:
-        return jsonify({"error": "no json data"}), 400
+        return {"error": "no json data"}, 400
       notes.append({'title': title, 'content': content})
-      return jsonify(notes)
+      return notes
     else:
-      return jsonify({"error": "no json data"}), 400
+      return {"error": "no json data"}, 400
   if request.method == 'DELETE':
     if request.json:
       json = request.json
       if 'title' in json :
         title = json['title']
       else:
-        return jsonify({"error": "no json data"}), 400
+        return {"error": "no json data"}, 400
       try:  
         notes.pop(notes.index(json))
       except:
-        return jsonify({"error": "no such note"}), 404
-      return jsonify(notes)
+        return {"error": "no such note"}, 404
+      return notes
     else:
-      return jsonify({"error": "no json data"}), 400
+      return {"error": "no json data"}, 400
 
 
 app.run()
