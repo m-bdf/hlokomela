@@ -4,16 +4,16 @@ app = Flask(__name__)
 app.config["DEBUG"] = True
 
 users = {
-  'John Doe': 'eod',
+  "John Doe": "eod",
 }
 
 notes = {
-  'Note 1': 'This is note 1',
+  "Note 1": "This is note 1",
 }
 
 
 @app.route('/login', methods=['POST'])
-def check_if_login():
+def login_route():
   if not request.is_json:
     return "no json data", 400
   try:
@@ -26,7 +26,7 @@ def check_if_login():
 
 
 @app.route('/register', methods=['POST'])
-def store_it():
+def register_route():
   if not request.is_json:
     return "no json data", 400
   try:
@@ -40,7 +40,7 @@ def store_it():
 
 
 @app.route('/note', methods=['GET', 'PUT', 'DELETE'])
-def note():
+def note_route():
   if request.method == 'GET':
     return notes
 
