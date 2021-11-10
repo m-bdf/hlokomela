@@ -24,11 +24,17 @@ class _LoginRegisterViewViewState extends State<LoginRegisterView> {
     setState(() {
       buttonState = ButtonState.inProgress;
     });
-    CallApi.post(context, "route").then((value) => {
+    CallApi.get(context, "http://192.168.178.65:5000/").then((value) => {
       setState(() {
         buttonState = ButtonState.normal;
       })
-    });
+    }).catchError(
+      (error) => {
+        setState(() {
+          buttonState = ButtonState.error;
+          print(error);
+        })
+      });
   }
 
   @override
@@ -53,13 +59,17 @@ class _LoginRegisterViewViewState extends State<LoginRegisterView> {
               child: Wrap(
                 children: [
                   Card(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12.0),
+                      ),
+                    ),
                     elevation: 8,
                     child: Padding(
                       padding: const EdgeInsets.all(12),
                       child: Column(
                         children: [
-                          CustomCenter(
-                            padding: const EdgeInsets.only(top: 12,),
+                          Center(
                             child: CustomTextField(
                               labelText: "Username",
                               hintText: "Enter your username",
@@ -77,12 +87,14 @@ class _LoginRegisterViewViewState extends State<LoginRegisterView> {
                           CustomCenter(
                             padding: const EdgeInsets.only(top: 12,),
                             child: ProgressButton(
-                                buttonState: buttonState,
-                                child: Text(
-                                  widget.type,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                onPressed: () {}),
+                              buttonState: buttonState,
+                              child: Text(
+                                widget.type,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () {
+                                sendLoginRequest();
+                              }),
                           ),
                         ],
                       ),
