@@ -57,11 +57,11 @@ def store_it():
     return jsonify({"error": "no json data"}), 400
 
 
-@app.route('/note', methods=['GET', 'POST', 'DELETE'])
+@app.route('/note', methods=['GET', 'PUT', 'DELETE'])
 def note():
   if request.method == 'GET':
     return jsonify(notes);
-  if request.method == 'POST':
+  if request.method == 'PUT':
     if request.json:
       json = request.json
       if 'title' in json and 'content' in json :
