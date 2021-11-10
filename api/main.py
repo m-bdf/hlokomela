@@ -1,7 +1,10 @@
 from flask import Flask, request
+import os
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
+
+SECRET = os.urandom(16).hex()
 
 users = {
   "John Doe": "eod",
@@ -23,6 +26,7 @@ def login_route():
     return f"missing {e}", 400
   if users.get(username) != password:
     return "bad credentials", 401
+  return SECRET
 
 
 @app.route('/register', methods=['POST'])
@@ -37,10 +41,15 @@ def register_route():
   if username in users:
     return "user already exists", 401
   users[username] = password
+  return SECRET
 
 
 @app.route('/note', methods=['GET', 'PUT', 'DELETE'])
 def note_route():
+  auth = request.headers.get('Authentication')
+  if not auth or auth.split()[1] != SECRET:
+    return "invalid bearer token", 401
+
   if request.method == 'GET':
     return notes
 
