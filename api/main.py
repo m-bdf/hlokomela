@@ -3,13 +3,13 @@ from flask import Flask, request
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
-users = [
-    {'username': 'John Doe', 'password': 'eod'},
-]
+users = {
+  'John Doe': 'eod',
+}
 
-notes = [
-    {'title': 'Note 1', 'content': 'This is note 1'},
-];
+notes = {
+  'Note 1': 'This is note 1',
+}
 
 @app.route('/', methods=['GET'])
 def home():
@@ -29,9 +29,8 @@ def check_if_login():
       password = json['password']
     else:
       return results
-    for user in users:
-      if user['username'] == username and user['password'] == password :
-          results.append(user)
+    if users[username] == password :
+      results.append(users[username])
     return results, 400
   else:
     return {"error": "no json data"}, 400
@@ -47,10 +46,9 @@ def store_it():
       password = json['password']
     else:
       return results, 401
-    for user in users:
-      if user['username'] == username :
-        return {"error": "username already exists"}
-    users.append({'username': username, 'password': password})
+    if username in users :
+      return {"error": "username already exists"}
+    users[username] = password
     return users
   else:
     return {"error": "no json data"}, 400
@@ -68,7 +66,7 @@ def note():
         content = json['content']
       else:
         return {"error": "no json data"}, 400
-      notes.append({'title': title, 'content': content})
+      notes[title] = content
       return notes
     else:
       return {"error": "no json data"}, 400
@@ -80,7 +78,7 @@ def note():
       else:
         return {"error": "no json data"}, 400
       try:  
-        notes.pop(notes.index(json))
+        notes.pop(title)
       except:
         return {"error": "no such note"}, 404
       return notes
