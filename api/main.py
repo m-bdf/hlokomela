@@ -80,7 +80,10 @@ def note():
         title = json['title']
       else:
         return jsonify({"error": "no json data"})
-      notes.pop(title)
+      try:  
+        notes.pop(notes.index(json))
+      except:
+        return jsonify({"error": "no such note"})
       return jsonify(notes)
     else:
       return jsonify({"error": "no json data"})
