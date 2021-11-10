@@ -4,7 +4,6 @@ from flask import request, jsonify
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
-# Create some test data for our catalog in the form of a list of dictionaries.
 users = [
     {'username': 'John Doe', 'password': 'eod'},
 ]
@@ -15,8 +14,6 @@ notes = [];
 def home():
     return 'it is what it is'
 
-
-# A route to return all of the available entries in our catalog.
 @app.route('/users', methods=['GET'])
 def api_all():
     return jsonify(users)
