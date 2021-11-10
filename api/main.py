@@ -8,7 +8,9 @@ users = [
     {'username': 'John Doe', 'password': 'eod'},
 ]
 
-notes = [];
+notes = [
+    {'title': 'Note 1', 'content': 'This is note 1'},
+];
 
 @app.route('/', methods=['GET'])
 def home():
