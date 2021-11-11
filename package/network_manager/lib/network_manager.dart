@@ -8,16 +8,18 @@ import 'package:http/http.dart' as http;
 class NetworkManager {
   static Map<String, String> baseHeader = {'Content-Type': 'application/json; charset=UTF-8'};
 
-  static Future<String> get(BuildContext context, String route,  {Map<String, String>? headers}) async {
+  static Future<String> get(BuildContext context, String route, {Map<String, String>? args, Map<String, String>? headers}) async {
     try {
       if (headers != null) {
         baseHeader.addAll(headers);
       }
-      final response = await http.get(Uri.parse(route), headers: baseHeader);
+      var uri = Uri.parse(route).replace(queryParameters: args);
+      final response = await http.get(uri, headers: baseHeader);
       if (response.statusCode == 200) {
         return response.body;
       } else {
         ScaffoldMessenger.of(context).showSnackBar(makeSnackBar(response.statusCode.toString()));
+        log(response.body);
         throw Exception('Failed to load Response');
       }
     } catch (e) {
