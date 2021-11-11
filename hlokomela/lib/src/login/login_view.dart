@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hlokomela/src/list_note/list_note_view.dart';
 import 'package:hlokomela/src/service/call_api.dart';
-import 'package:hlokomela/src/widget/custome_center.dart';
+import 'package:hlokomela/src/widget/custom_center.dart';
 import 'package:hlokomela/src/widget/progress_button.dart';
 import 'package:hlokomela/src/widget/custom_text_field.dart';
 
@@ -28,17 +29,17 @@ class _LoginRegisterViewViewState extends State<LoginRegisterView> {
     setState(() {
       buttonState = ButtonState.inProgress;
     });
-    CallApi.post(context, "http://ab98-2003-cd-7711-1600-3ed-15bc-29a8-36ca.ngrok.io/" + widget.type.toLowerCase(), body: body)
+    CallApi.post(context, CallApi.route + widget.type.toLowerCase(), body: body)
         .then((value) => {
               setState(() {
-                print(value);
+                CallApi.token = value["token"];
                 buttonState = ButtonState.normal;
+                Navigator.of(context).pushNamed(ListNoteView.routeName);
               })
             })
         .catchError((error) => {
               setState(() {
                 buttonState = ButtonState.error;
-                print(error);
               })
             });
   }
