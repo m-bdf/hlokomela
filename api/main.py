@@ -53,7 +53,8 @@ def get_notes():
 
 @app.route('/notes')
 def notes_route():
-  return {'titles': list(get_notes())}
+  index, count = get_fields('index', 'count')
+  return {'titles': list(get_notes())[index:index+count]}
 
 
 @app.route('/note', methods=['GET', 'PUT', 'DELETE'])
