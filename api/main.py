@@ -42,6 +42,17 @@ def register_route():
   return {'token': jwt.encode({'iss': username}, SECRET)}
 
 
+@app.route('/notes')
+def notes_route():
+  try:
+    token = request.headers['Authentication'].split()[1]
+    username = jwt.decode(token, SECRET)['iss']
+    notes = users[username].notes
+  except:
+    return {'error': "invalid bearer token"}, 401
+  return {'titles': notes.keys()}
+
+
 @app.route('/note', methods=['GET', 'PUT', 'DELETE'])
 def note_route():
   try:
@@ -52,7 +63,15 @@ def note_route():
     return {'error': "invalid bearer token"}, 401
 
   if request.method == 'GET':
-    return {'notes': notes}
+    if not request.is_json:
+      return {'error': "no json data"}, 400
+    try:
+      title = request.json['title']
+    except KeyError as e:
+      return {'error': f"missing {e}"}, 400
+    if title not in notes:
+      return {'error': "no such note"}, 404
+    return {'content': notes[title]}
 
   if request.method == 'PUT':
     if not request.is_json:
