@@ -19,8 +19,6 @@ users: dict[str, User] = {}
 
 
 def get_fields(*fields):
-  if not request.is_json:
-    raise exceptions.BadRequest("no json data")
   try:
     return [request.json[field] for field in fields]
   except KeyError as e:
@@ -46,8 +44,8 @@ def register_route():
 
 def get_notes():
   try:
-    token = request.headers['Authentication'].split()[1]
-    username = jwt.decode(token, SECRET)['iss']
+    token = request.headers['Authorization'].split()[1]
+    username = jwt.decode(token, SECRET, ["HS256"])['iss']
     return users[username].notes
   except:
     raise exceptions.Unauthorized("invalid bearer token")
@@ -55,26 +53,28 @@ def get_notes():
 
 @app.route('/notes')
 def notes_route():
-  return {'titles': get_notes().keys()}
+  return {'titles': list(get_notes())}
 
 
 @app.route('/note', methods=['GET', 'PUT', 'DELETE'])
 def note_route():
+  title, = get_fields('title')
   notes = get_notes()
-  title = get_fields('title')
 
   if request.method == 'GET':
     if title not in notes:
       raise exceptions.NotFound("no such note")
-    return {'content': notes[title]}
+    return {'title': title, 'content': notes[title]}
 
-  if request.method == 'PUT':
-    notes[title] = get_fields('content')
+  elif request.method == 'PUT':
+    content, = get_fields('content')
+    notes[title] = content
+    return {'title': title, 'content': content}
 
-  if request.method == 'DELETE':
+  elif request.method == 'DELETE':
     if title not in notes:
       raise exceptions.NotFound("no such note")
-    del notes[title]
+    return {'title': title, 'content': notes.pop(title)}
 
 
 app.run()
