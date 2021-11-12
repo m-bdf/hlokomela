@@ -13,38 +13,34 @@ class ExitWillPop extends StatefulWidget {
 }
 
 class _ExitWillPopState extends State<ExitWillPop> {
-
   Future<bool> _onWillPop() async {
     return (await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Are you sure?'),
-        content: const Text('Do you want to exit an App'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('No'),
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to exit an App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () => {
+                  if (Platform.isAndroid)
+                    {SystemNavigator.pop()}
+                  else if (Platform.isIOS)
+                    {exit(0)}
+                },
+                child: const Text('Yes'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => {
-              if (Platform.isAndroid) {
-                SystemNavigator.pop()
-              } else if (Platform.isIOS) {
-                exit(0)
-              }
-            },
-            child: const Text('Yes'),
-          ),
-        ],
-      ),
-    )) ?? false;
+        )) ??
+        false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        child: widget.child,
-        onWillPop: _onWillPop
-    );
+    return WillPopScope(child: widget.child, onWillPop: _onWillPop);
   }
 }

@@ -6,7 +6,6 @@ class CustomCenter extends StatelessWidget {
     Key? key,
     required this.child,
     required this.padding,
-
   }) : super(key: key);
 
   final Widget child;

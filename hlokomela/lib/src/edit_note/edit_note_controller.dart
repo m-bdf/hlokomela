@@ -22,6 +22,4 @@ class EditNoteController with ChangeNotifier {
     _note = await _notesViewService.getNote(context, title);
     notifyListeners();
   }
-
-
 }

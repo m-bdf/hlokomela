@@ -19,23 +19,22 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
-      color: backgroundColor ?? Theme.of(context).primaryColor,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(29.0),
-        ),
-      ),
-      child: SizedBox(
-        width: width,
-        height: height ?? 48,
-        child : InkWell(
-          onTap: onPress,
-          child: Center(
-            child: child,
+        elevation: 3,
+        color: backgroundColor ?? Theme.of(context).primaryColor,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(29.0),
           ),
         ),
-      )
-    );
+        child: SizedBox(
+          width: width,
+          height: height ?? 48,
+          child: InkWell(
+            onTap: onPress,
+            child: Center(
+              child: child,
+            ),
+          ),
+        ));
   }
 }

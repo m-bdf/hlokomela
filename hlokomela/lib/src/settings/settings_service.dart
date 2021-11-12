@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_cache_manager/my_cache_manager.dart';
 
 class SettingsService {
-
   Future<ThemeMode> themeMode() async {
-    bool? value =  await MyCacheManager.readBool("ThemeIsDark");
+    bool? value = await MyCacheManager.readBool("ThemeIsDark");
     if (value == null) {
       MyCacheManager.writeBool("ThemeIsDark", false);
       return ThemeMode.light;
@@ -18,7 +17,7 @@ class SettingsService {
   }
 
   Future<bool> themeModeBoolean() async {
-    bool? value =  await MyCacheManager.readBool("ThemeIsDark");
+    bool? value = await MyCacheManager.readBool("ThemeIsDark");
     if (value == null) {
       MyCacheManager.writeBool("ThemeIsDark", false);
       return false;

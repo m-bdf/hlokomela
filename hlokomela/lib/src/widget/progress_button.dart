@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-
 class ProgressButton extends StatefulWidget {
   final VoidCallback onPressed;
   final ButtonState buttonState;
@@ -10,13 +9,14 @@ class ProgressButton extends StatefulWidget {
   final Color? progressColor;
   final double? borderRadiusSize;
 
-  const ProgressButton({Key? key,
-    required this.buttonState,
-    required this.onPressed,
-    this.child,
-    this.backgroundColor,
-    this.borderRadiusSize,
-    this.progressColor})
+  const ProgressButton(
+      {Key? key,
+      required this.buttonState,
+      required this.onPressed,
+      this.child,
+      this.backgroundColor,
+      this.borderRadiusSize,
+      this.progressColor})
       : super(key: key);
 
   @override
@@ -34,12 +34,11 @@ class _ProgressButtonState extends State<ProgressButton>
   late Animation<double?> _widthAnimation;
 
   double get buttonWidth => _widthAnimation.value ?? 0;
-  BorderRadius get borderRadius => _borderAnimation.value ?? BorderRadius.circular(12);
+  BorderRadius get borderRadius =>
+      _borderAnimation.value ?? BorderRadius.circular(12);
 
   Color get backgroundColor =>
-      widget.backgroundColor ?? Theme
-          .of(context)
-          .primaryColor;
+      widget.backgroundColor ?? Theme.of(context).primaryColor;
 
   Color get progressColor => widget.progressColor ?? Colors.white;
 
@@ -58,18 +57,23 @@ class _ProgressButtonState extends State<ProgressButton>
     // Define errorAnimation sequence
     _errorAnimation = TweenSequence<Offset>([
       TweenSequenceItem<Offset>(
-          tween: Tween(begin: const Offset(0, 0), end: const Offset(0.03, 0)), weight: 1),
+          tween: Tween(begin: const Offset(0, 0), end: const Offset(0.03, 0)),
+          weight: 1),
       TweenSequenceItem<Offset>(
-          tween: Tween(begin: const Offset(0.03, 0), end: const Offset(-0.03, 0)),
+          tween:
+              Tween(begin: const Offset(0.03, 0), end: const Offset(-0.03, 0)),
           weight: 2),
       TweenSequenceItem<Offset>(
-          tween: Tween(begin: const Offset(-0.03, 0), end: const Offset(0.03, 0)),
+          tween:
+              Tween(begin: const Offset(-0.03, 0), end: const Offset(0.03, 0)),
           weight: 2),
       TweenSequenceItem<Offset>(
-          tween: Tween(begin: const Offset(0.03, 0), end: const Offset(-0.03, 0)),
+          tween:
+              Tween(begin: const Offset(0.03, 0), end: const Offset(-0.03, 0)),
           weight: 2),
       TweenSequenceItem<Offset>(
-          tween: Tween(begin: const Offset(-0.03, 0), end: const Offset(0, 0)), weight: 1)
+          tween: Tween(begin: const Offset(-0.03, 0), end: const Offset(0, 0)),
+          weight: 1)
     ]).animate(CurvedAnimation(
       parent: _errorAnimationController,
       curve: Curves.linear,
@@ -112,13 +116,12 @@ class _ProgressButtonState extends State<ProgressButton>
         builder: (context, child) {
           return SlideTransition(
               position: _errorAnimation,
-              child: LayoutBuilder(builder: getProgressAnimatedBuilder
-              )
-          );
+              child: LayoutBuilder(builder: getProgressAnimatedBuilder));
         });
   }
 
-  AnimatedBuilder getProgressAnimatedBuilder(BuildContext context, BoxConstraints constraints) {
+  AnimatedBuilder getProgressAnimatedBuilder(
+      BuildContext context, BoxConstraints constraints) {
     var buttonHeight = constraints.maxHeight;
     // If there is no constraint on height, we should constrain it
     if (buttonHeight == double.infinity) buttonHeight = 48;
@@ -126,11 +129,11 @@ class _ProgressButtonState extends State<ProgressButton>
     // These animation configurations can be tweaked to have
     // however you like it
     _borderAnimation = BorderRadiusTween(
-        begin: BorderRadius.circular(widget.borderRadiusSize ?? buttonHeight / 6),
-        end: BorderRadius.circular(buttonHeight / 2))
+            begin: BorderRadius.circular(
+                widget.borderRadiusSize ?? buttonHeight / 6),
+            end: BorderRadius.circular(buttonHeight / 2))
         .animate(CurvedAnimation(
-        parent: _progressAnimationController,
-        curve: Curves.linear));
+            parent: _progressAnimationController, curve: Curves.linear));
 
     _widthAnimation = Tween<double>(
       begin: constraints.maxWidth,
@@ -144,7 +147,6 @@ class _ProgressButtonState extends State<ProgressButton>
 
     if (widget.buttonState != ButtonState.inProgress) {
       buttonContent = child;
-
     } else if (widget.buttonState == ButtonState.inProgress) {
       buttonContent = SizedBox(
           height: buttonHeight,
@@ -152,12 +154,10 @@ class _ProgressButtonState extends State<ProgressButton>
           child: Padding(
             padding: const EdgeInsets.all(8),
             child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(
-                  progressColor),
+              valueColor: AlwaysStoppedAnimation<Color>(progressColor),
               strokeWidth: 3,
             ),
-          )
-      );
+          ));
     }
 
     return AnimatedBuilder(
@@ -172,8 +172,7 @@ class _ProgressButtonState extends State<ProgressButton>
                 width: buttonWidth,
                 height: buttonHeight,
                 decoration: BoxDecoration(
-                    borderRadius: borderRadius,
-                    color: backgroundColor),
+                    borderRadius: borderRadius, color: backgroundColor),
                 child: Center(child: buttonContent),
               ),
             ));

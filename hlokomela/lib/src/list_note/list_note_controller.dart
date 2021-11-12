@@ -17,7 +17,8 @@ class ListNoteController with ChangeNotifier {
   }
 
   Future<void> loadMoreNotes(int index, int count) async {
-    _notes!["titles"].addAll((await _notesViewService.getNotes(context, index, count))["titles"]);
+    _notes!["titles"].addAll(
+        (await _notesViewService.getNotes(context, index, count))["titles"]);
     notifyListeners();
   }
 
@@ -25,6 +26,4 @@ class ListNoteController with ChangeNotifier {
     _notes = await _notesViewService.getNotes(context, 0, count);
     notifyListeners();
   }
-
-
 }

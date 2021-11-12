@@ -6,7 +6,8 @@ import 'edit_note_controller.dart';
 import 'edit_note_service.dart';
 
 class EditNoteView extends StatefulWidget {
-  const EditNoteView({Key? key, required this.noteName, required this.isNew}) : super(key: key);
+  const EditNoteView({Key? key, required this.noteName, required this.isNew})
+      : super(key: key);
   final String noteName;
   final bool isNew;
   static const routeName = '/edit_note';
@@ -26,7 +27,8 @@ class _EditNoteView extends State<EditNoteView> {
     if (!widget.isNew) {
       controller.loadNote(widget.noteName).then((_) {
         setState(() {
-          noteController = TextEditingController(text: controller.note!["content"]);
+          noteController =
+              TextEditingController(text: controller.note!["content"]);
         });
       });
     } else {
@@ -40,17 +42,18 @@ class _EditNoteView extends State<EditNoteView> {
     return SaveWillPop(
       isSaved: isSaved,
       onQuit: () => {
-        showDialog(context: context, builder: (BuildContext context) {
-          return const LoadingDialog(title: "Saving note");
-          }),
-        controller.saveNote(widget.noteName, noteController?.text ?? "").then((_) => {
-          Navigator.of(context).pop(true),
-          Navigator.of(context).pop(true)
-        })
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const LoadingDialog(title: "Saving note");
+            }),
+        controller.saveNote(widget.noteName, noteController?.text ?? "").then(
+            (_) => {
+                  Navigator.of(context).pop(true),
+                  Navigator.of(context).pop(true)
+                })
       },
-      onCancel: () => {
-        Navigator.of(context).pop(true)
-      },
+      onCancel: () => {Navigator.of(context).pop(true)},
       canLeave: noteController == null ? false : true,
       child: Scaffold(
         body: Padding(
@@ -71,38 +74,43 @@ class _EditNoteView extends State<EditNoteView> {
                 ),
               ),
               Expanded(
-                flex: 9,
-                child: Container(
-                  color: Theme.of(context).backgroundColor,
-                  child: noteController == null ? const LoadingDialog(title: "Loading note") : TextField(
-                    controller: noteController,
-                    textInputAction: TextInputAction.newline,
-                    keyboardType: TextInputType.multiline,
-                    minLines: null,
-                    maxLines: null,
-                    expands: true,
-                    onChanged: (text) {
-                      setState(() {
-                        isSaved = false;
-                      });
-                    },
-                  ),
-                )
-              )
+                  flex: 9,
+                  child: Container(
+                    color: Theme.of(context).backgroundColor,
+                    child: noteController == null
+                        ? const LoadingDialog(title: "Loading note")
+                        : TextField(
+                            controller: noteController,
+                            textInputAction: TextInputAction.newline,
+                            keyboardType: TextInputType.multiline,
+                            minLines: null,
+                            maxLines: null,
+                            expands: true,
+                            onChanged: (text) {
+                              setState(() {
+                                isSaved = false;
+                              });
+                            },
+                          ),
+                  ))
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            showDialog(context: context, builder: (BuildContext context) {
-              return const LoadingDialog(title: "Saving note");
-            });
-            controller.saveNote(widget.noteName, noteController?.text ?? "").then((_) => {
-              Navigator.of(context).pop(true),
-              setState(() {
-                isSaved = true;
-              }),
-            });
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const LoadingDialog(title: "Saving note");
+                });
+            controller
+                .saveNote(widget.noteName, noteController?.text ?? "")
+                .then((_) => {
+                      Navigator.of(context).pop(true),
+                      setState(() {
+                        isSaved = true;
+                      }),
+                    });
             FocusScope.of(context).unfocus();
           },
           child: const Icon(Icons.save),

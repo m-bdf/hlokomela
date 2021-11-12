@@ -15,10 +15,12 @@ class WelcomeView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Center(
-            child: Text("Welcome to\nHlokomela", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            child: Text("Welcome to\nHlokomela",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           ),
           Center(
-            child : Image.asset('assets/icons/notebook.png', width: size.width * 0.6, height: size.height * 0.6),
+            child: Image.asset('assets/icons/notebook.png',
+                width: size.width * 0.6, height: size.height * 0.6),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -26,7 +28,8 @@ class WelcomeView extends StatelessWidget {
               CustomButton(
                 child: const Text("Login"),
                 onPress: () {
-                  Navigator.of(context).pushNamed(LoginRegisterView.routeNameLogin);
+                  Navigator.of(context)
+                      .pushNamed(LoginRegisterView.routeNameLogin);
                 },
                 width: size.width * 0.3,
               ),
@@ -34,7 +37,8 @@ class WelcomeView extends StatelessWidget {
               CustomButton(
                 child: const Text("Register"),
                 onPress: () {
-                  Navigator.of(context).pushNamed(LoginRegisterView.routeNameRegister);
+                  Navigator.of(context)
+                      .pushNamed(LoginRegisterView.routeNameRegister);
                 },
                 width: size.width * 0.3,
                 backgroundColor: Theme.of(context).backgroundColor,

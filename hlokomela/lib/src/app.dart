@@ -51,14 +51,21 @@ class MyApp extends StatelessWidget {
                   case WelcomeView.routeName:
                     return const WelcomeView();
                   case LoginRegisterView.routeNameLogin:
-                    return const LoginRegisterView(type: "Login",);
+                    return const LoginRegisterView(
+                      type: "Login",
+                    );
                   case LoginRegisterView.routeNameRegister:
-                    return const LoginRegisterView(type: "Register",);
+                    return const LoginRegisterView(
+                      type: "Register",
+                    );
                   case ListNoteView.routeName:
                     return const ListNoteView();
                   case EditNoteView.routeName:
                     if (args is EditNoteData) {
-                      return EditNoteView(noteName: (args).noteName, isNew: (args).isNew,);
+                      return EditNoteView(
+                        noteName: (args).noteName,
+                        isNew: (args).isNew,
+                      );
                     }
                     return const ListNoteView();
                   default:
@@ -73,6 +80,4 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class EditNoteViewData {
-
-}
+class EditNoteViewData {}

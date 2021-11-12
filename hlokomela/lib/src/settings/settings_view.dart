@@ -17,10 +17,10 @@ class _SettingsViewState extends State<SettingsView> {
   @override
   void initState() {
     widget.controller.loadSettingsBool().then((value) => {
-      setState(() {
-        isActive = value;
-      })
-    });
+          setState(() {
+            isActive = value;
+          })
+        });
     super.initState();
   }
 

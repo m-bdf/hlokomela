@@ -24,7 +24,7 @@ class ListNoteWidget extends StatelessWidget {
     return Card(
       child: InkWell(
         onTap: onPressCard,
-        child : Padding(
+        child: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(
             children: [
