@@ -20,7 +20,7 @@ users: dict[str, User] = {}
 
 def get_fields(*fields):
   try:
-    return [request.json[field] for field in fields]
+    return [request.values.to_dict()[field] for field in fields]
   except KeyError as e:
     raise exceptions.BadRequest(f"missing {e}")
 
@@ -53,7 +53,10 @@ def get_notes():
 
 @app.route('/notes')
 def notes_route():
-  index, count = get_fields('index', 'count')
+  try:
+    index, count = map(int, get_fields('index', 'count'))
+  except ValueError as e:
+    raise exceptions.BadRequest(f"{e}")
   return {'titles': list(get_notes())[index:index+count]}
 
 
