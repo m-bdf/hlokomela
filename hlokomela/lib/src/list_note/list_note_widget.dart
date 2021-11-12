@@ -7,23 +7,23 @@ class ListNoteWidget extends StatelessWidget {
     required this.controller,
     required this.maxChar,
     required this.position,
-    required this.onPress,
+    required this.onPressDelete,
+    required this.onPressCard,
     required this.scrollController,
   }) : super(key: key);
 
   final ListNoteController controller;
   final int maxChar;
   final int position;
-  final VoidCallback onPress;
+  final VoidCallback onPressDelete;
+  final VoidCallback onPressCard;
   final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onTap: () {
-          //TODO: add edit note
-        },
+        onTap: onPressCard,
         child : Padding(
           padding: const EdgeInsets.all(12),
           child: Row(
@@ -45,7 +45,7 @@ class ListNoteWidget extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: onPress,
+                onPressed: onPressDelete,
                 icon: const Icon(Icons.delete),
               ),
             ],

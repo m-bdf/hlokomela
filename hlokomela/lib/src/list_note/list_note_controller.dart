@@ -12,14 +12,16 @@ class ListNoteController with ChangeNotifier {
 
   Map<String, dynamic>? get notes => _notes;
 
+  Future<void> deleteNote(String name) async {
+    await _notesViewService.deleteNote(context, name);
+  }
+
   Future<void> loadMoreNotes(int index, int count) async {
-    WidgetsFlutterBinding.ensureInitialized();
     _notes!["titles"].addAll((await _notesViewService.getNotes(context, index, count))["titles"]);
     notifyListeners();
   }
 
   Future<void> loadNotes(int count) async {
-    WidgetsFlutterBinding.ensureInitialized();
     _notes = await _notesViewService.getNotes(context, 0, count);
     notifyListeners();
   }

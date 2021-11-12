@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hlokomela/src/edit_note/edit_note_data.dart';
 import 'package:hlokomela/src/welcome/welcome_view.dart';
 
+import 'edit_note/edit_note_view.dart';
 import 'list_note/list_note_view.dart';
 import 'login/login_view.dart';
 import 'settings/settings_controller.dart';
@@ -42,6 +44,7 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute<void>(
               settings: routeSettings,
               builder: (BuildContext context) {
+                Object? args = routeSettings.arguments;
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
@@ -53,6 +56,11 @@ class MyApp extends StatelessWidget {
                     return const LoginRegisterView(type: "Register",);
                   case ListNoteView.routeName:
                     return const ListNoteView();
+                  case EditNoteView.routeName:
+                    if (args is EditNoteData) {
+                      return EditNoteView(noteName: (args).noteName, isNew: (args).isNew,);
+                    }
+                    return const ListNoteView();
                   default:
                     return const WelcomeView();
                 }
@@ -63,4 +71,8 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+}
+
+class EditNoteViewData {
+
 }

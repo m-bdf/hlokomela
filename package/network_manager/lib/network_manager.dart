@@ -1,12 +1,11 @@
 library network_manager;
 
-import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkManager {
-  static Map<String, String> baseHeader = {'Content-Type': 'application/json; charset=UTF-8'};
+  static Map<String, String> baseHeader = {'': ''};
 
   static Future<String> get(BuildContext context, String route, {Map<String, String>? args, Map<String, String>? headers}) async {
     try {
@@ -32,7 +31,7 @@ class NetworkManager {
       if (headers != null) {
         baseHeader.addAll(headers);
       }
-      final response = await http.post(Uri.parse(route), body: jsonEncode(body), headers: baseHeader);
+      final response = await http.post(Uri.parse(route), body: body, headers: baseHeader);
       if (response.statusCode == 200) {
         return response.body;
       } else {
@@ -49,7 +48,7 @@ class NetworkManager {
       if (headers != null) {
         baseHeader.addAll(headers);
       }
-      final response = await http.put(Uri.parse(route), body: jsonEncode(body), headers: baseHeader);
+      final response = await http.put(Uri.parse(route), body: body, headers: baseHeader);
       if (response.statusCode == 200) {
         return response.body;
       } else {
@@ -67,7 +66,7 @@ class NetworkManager {
       if (headers != null) {
         baseHeader.addAll(headers);
       }
-      final response = await http.delete(Uri.parse(route), body: jsonEncode(body), headers: baseHeader);
+      final response = await http.delete(Uri.parse(route), body: body, headers: baseHeader);
       if (response.statusCode == 200) {
         return response.body;
       } else {

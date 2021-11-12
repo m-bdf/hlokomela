@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hlokomela/src/edit_note/edit_note_data.dart';
+import 'package:hlokomela/src/edit_note/edit_note_view.dart';
 import 'package:hlokomela/src/list_note/list_note_service.dart';
 import 'package:hlokomela/src/list_note/list_note_widget.dart';
 import 'package:hlokomela/src/settings/settings_view.dart';
-import 'package:hlokomela/src/widget/custom_will_pop.dart';
+import 'package:hlokomela/src/widget/exit_will_pop.dart';
 
 import 'list_note_controller.dart';
 
@@ -24,16 +26,23 @@ class _SettingsViewState extends State<ListNoteView> {
 
   insertNote(int index) {
     for (var i = index; i < controller.notes?["titles"].length; i++) {
-      listKey.currentState?.insertItem(i,
-          duration: const Duration(milliseconds: 200));
+      listKey.currentState
+          ?.insertItem(i, duration: const Duration(milliseconds: 200));
     }
     isInserted = true;
   }
 
+  removeNote(int index) {
+    listKey.currentState?.removeItem(
+        index, (_, animation) => slideIt(context, index, animation),
+        duration: const Duration(milliseconds: 200));
+    controller.notes?["titles"].removeAt(index);
+  }
+
   loadNote() {
     for (var i = 0; i < controller.notes?["titles"].length; i++) {
-      listKey.currentState?.insertItem(i,
-          duration: const Duration(milliseconds: 200));
+      listKey.currentState
+          ?.insertItem(i, duration: const Duration(milliseconds: 200));
     }
   }
 
@@ -45,20 +54,19 @@ class _SettingsViewState extends State<ListNoteView> {
         loadNote();
       }
     });
-    scrollController.addListener(
-            () {
-          double maxScroll = scrollController.position.maxScrollExtent;
-          double currentScroll = scrollController.position.pixels;
-          double delta = 200.0;
-          int index = controller.notes?["titles"].length;
-          if (maxScroll - currentScroll <= delta && isInserted) {
-            controller.loadMoreNotes(controller.notes?["titles"].length, MediaQuery.of(context).size.height~/30).then((_) => {
-              insertNote(index)
-            });
-            isInserted = false;
-          }
-        }
-    );
+    scrollController.addListener(() {
+      double maxScroll = scrollController.position.maxScrollExtent;
+      double currentScroll = scrollController.position.pixels;
+      double delta = 200.0;
+      int index = controller.notes?["titles"].length;
+      if (maxScroll - currentScroll <= delta && isInserted) {
+        controller
+            .loadMoreNotes(controller.notes?["titles"].length,
+                MediaQuery.of(context).size.height ~/ 30)
+            .then((_) => {insertNote(index)});
+        isInserted = false;
+      }
+    });
     super.initState();
   }
 
@@ -66,7 +74,7 @@ class _SettingsViewState extends State<ListNoteView> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     maxChar = (size.width * 0.12).toInt();
-    return CustomWillPop(
+    return ExitWillPop(
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.all(8),
@@ -84,7 +92,7 @@ class _SettingsViewState extends State<ListNoteView> {
               ),
               const Expanded(
                 flex: 1,
-                child : Center(
+                child: Center(
                   child: Text(
                     'Note',
                     style: TextStyle(
@@ -96,7 +104,7 @@ class _SettingsViewState extends State<ListNoteView> {
               ),
               Expanded(
                 flex: 9,
-                child : AnimatedList(
+                child: AnimatedList(
                   controller: scrollController,
                   key: listKey,
                   shrinkWrap: true,
@@ -111,7 +119,27 @@ class _SettingsViewState extends State<ListNoteView> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            //TODO : create new note
+            TextEditingController controller = TextEditingController();
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Create note'),
+                content: const Text('Enter a name'),
+                actions: <Widget>[
+                  TextField(
+                    controller: controller,
+                  ),
+                  TextButton(
+                    onPressed: () =>
+                        {Navigator.of(context).pop(controller.text)},
+                    child: const Text('Validate'),
+                  ),
+                ],
+              ),
+            ).then((value) => {
+                  Navigator.of(context).pushNamed(EditNoteView.routeName,
+                      arguments: EditNoteData(noteName: value, isNew: true))
+                });
           },
           child: const Icon(Icons.add),
           backgroundColor: Theme.of(context).primaryColor,
@@ -126,7 +154,25 @@ class _SettingsViewState extends State<ListNoteView> {
         begin: const Offset(-1, 0),
         end: const Offset(0, 0),
       ).animate(animation),
-      child: ListNoteWidget(controller: controller, maxChar: maxChar, scrollController: scrollController, position: position, onPress: (){},),
+      child: ListNoteWidget(
+        controller: controller,
+        maxChar: maxChar,
+        scrollController: scrollController,
+        position: position,
+        onPressDelete: () {
+          controller
+              .deleteNote(controller.notes?["titles"][position])
+              .then((value) {
+            removeNote(position);
+          });
+        },
+        onPressCard: () {
+          Navigator.of(context).pushNamed(EditNoteView.routeName,
+              arguments: EditNoteData(
+                  noteName: controller.notes?["titles"][position],
+                  isNew: false));
+        },
+      ),
     );
   }
 }

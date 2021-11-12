@@ -4,15 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class CustomWillPop extends StatefulWidget {
-  const CustomWillPop({Key? key, required this.child}) : super(key: key);
+class ExitWillPop extends StatefulWidget {
+  const ExitWillPop({Key? key, required this.child}) : super(key: key);
   final Widget child;
 
   @override
-  _CustomButtonState createState() => _CustomButtonState();
+  _ExitWillPopState createState() => _ExitWillPopState();
 }
 
-class _CustomButtonState extends State<CustomWillPop> {
+class _ExitWillPopState extends State<ExitWillPop> {
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
