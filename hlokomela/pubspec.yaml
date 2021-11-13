@@ -16,6 +16,7 @@ dependencies:
     path: ../package/my_cache_manager
   network_manager:
     path: ../package/network_manager
+  shake: ^2.0.0
 
   flutter_localizations:
     sdk: flutter
