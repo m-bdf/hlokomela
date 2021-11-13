@@ -6,7 +6,7 @@ import 'package:network_manager/network_manager.dart';
 class CallApi {
   static String? token;
   static String route =
-      "http://2187-2003-cd-7715-2800-3335-3b3f-707c-2853.ngrok.io/";
+      "http://4025-2003-cd-7715-2800-3335-3b3f-707c-2853.ngrok.io/";
 
   static Future<dynamic> get(BuildContext context, String route,
       {Map<String, String>? args, Map<String, String>? headers}) async {

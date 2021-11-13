@@ -13,12 +13,12 @@ class WelcomeView extends StatefulWidget {
 }
 
 class _WelcomeView extends State<WelcomeView> {
-
   @override
   void initState() {
     ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: () {
       setState(() {
-        TextEditingController controller = TextEditingController(text: CallApi.route);
+        TextEditingController controller =
+            TextEditingController(text: CallApi.route);
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -29,15 +29,12 @@ class _WelcomeView extends State<WelcomeView> {
                 controller: controller,
               ),
               TextButton(
-                onPressed: () =>
-                {Navigator.of(context).pop(controller.text)},
+                onPressed: () => {Navigator.of(context).pop(controller.text)},
                 child: const Text('Validate'),
               ),
             ],
           ),
-        ).then((value) => {
-          CallApi.route = controller.text
-        });
+        ).then((value) => {CallApi.route = controller.text});
       });
     });
     super.initState();
