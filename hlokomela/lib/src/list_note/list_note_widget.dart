@@ -21,6 +21,9 @@ class ListNoteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (controller.notes?["titles"].length == 0) {
+      return Container();
+    }
     return Card(
       child: InkWell(
         onTap: onPressCard,
@@ -35,7 +38,7 @@ class ListNoteWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      controller.notes?["titles"][position] ?? "Empty Title",
+                      controller.notes?["titles"]?[position] ?? "Empty Title",
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

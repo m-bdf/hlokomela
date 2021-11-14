@@ -5,6 +5,7 @@ import 'package:hlokomela/src/list_note/list_note_service.dart';
 import 'package:hlokomela/src/list_note/list_note_widget.dart';
 import 'package:hlokomela/src/settings/settings_view.dart';
 import 'package:hlokomela/src/widget/exit_will_pop.dart';
+import 'package:hlokomela/src/widget/loading_dialog.dart';
 
 import 'list_note_controller.dart';
 
@@ -79,16 +80,48 @@ class _SettingsViewState extends State<ListNoteView> {
         body: Padding(
           padding: const EdgeInsets.all(8),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Expanded(
                 flex: 1,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(SettingsView.routeName);
-                  },
-                  icon: const Icon(Icons.settings),
-                ),
+                child: Row(children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      icon: const Icon(Icons.settings),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(SettingsView.routeName);
+                      },
+                    ),
+                  ),
+                  const Expanded(flex: 3, child: SizedBox()),
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      icon: const Icon(Icons.refresh),
+                      onPressed: () {
+                        if (controller.notes?["titles"].length > 0) {
+                          controller
+                              .loadMoreNotes(controller.notes?["titles"].length,
+                              MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height ~/ 30)
+                              .then((_) =>
+                          {
+                              insertNote(
+                                  controller.notes?["titles"].length)
+                            });
+                        } else {
+                          controller.loadNotes(15).then((_) {
+                            if (controller.notes != null) {
+                              loadNote();
+                            }
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                ]),
               ),
               const Expanded(
                 flex: 1,
@@ -160,9 +193,16 @@ class _SettingsViewState extends State<ListNoteView> {
         scrollController: scrollController,
         position: position,
         onPressDelete: () {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return const LoadingDialog(title: "Delete note");
+              });
           controller
               .deleteNote(controller.notes?["titles"][position])
               .then((value) {
+            Navigator.of(context).pop(true);
             removeNote(position);
           });
         },

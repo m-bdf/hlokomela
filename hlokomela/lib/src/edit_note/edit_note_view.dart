@@ -44,6 +44,7 @@ class _EditNoteView extends State<EditNoteView> {
       onQuit: () => {
         showDialog(
             context: context,
+            barrierDismissible: false,
             builder: (BuildContext context) {
               return const LoadingDialog(title: "Saving note");
             }),
@@ -100,6 +101,7 @@ class _EditNoteView extends State<EditNoteView> {
           onPressed: () {
             showDialog(
                 context: context,
+                barrierDismissible: false,
                 builder: (BuildContext context) {
                   return const LoadingDialog(title: "Saving note");
                 });
