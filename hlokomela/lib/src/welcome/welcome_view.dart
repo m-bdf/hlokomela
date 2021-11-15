@@ -15,7 +15,7 @@ class WelcomeView extends StatefulWidget {
 class _WelcomeView extends State<WelcomeView> {
   @override
   void initState() {
-    ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: () {
+    ShakeDetector.autoStart(onPhoneShake: () {
       setState(() {
         TextEditingController controller =
             TextEditingController(text: CallApi.route);

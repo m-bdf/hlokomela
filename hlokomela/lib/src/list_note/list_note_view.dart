@@ -102,15 +102,11 @@ class _SettingsViewState extends State<ListNoteView> {
                         if (controller.notes?["titles"].length > 0) {
                           controller
                               .loadMoreNotes(controller.notes?["titles"].length,
-                              MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height ~/ 30)
-                              .then((_) =>
-                          {
-                              insertNote(
-                                  controller.notes?["titles"].length)
-                            });
+                                  MediaQuery.of(context).size.height ~/ 30)
+                              .then((_) => {
+                                    insertNote(
+                                        controller.notes?["titles"].length)
+                                  });
                         } else {
                           controller.loadNotes(15).then((_) {
                             if (controller.notes != null) {

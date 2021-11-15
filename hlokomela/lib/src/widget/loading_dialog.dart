@@ -10,14 +10,15 @@ class LoadingDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async => false, // <-- Prevents dialog dismiss on press of back button.
-        child: AlertDialog(
-            title: Center(child: Text(title ?? 'Loading')),
-            content: Wrap(
-              children: const [
-                Center(child: CircularProgressIndicator()),
-              ],
-            )),
-        );
+      onWillPop: () async =>
+          false, // <-- Prevents dialog dismiss on press of back button.
+      child: AlertDialog(
+          title: Center(child: Text(title ?? 'Loading')),
+          content: Wrap(
+            children: const [
+              Center(child: CircularProgressIndicator()),
+            ],
+          )),
+    );
   }
 }
