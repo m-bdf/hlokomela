@@ -13,7 +13,7 @@ def wrap_error(e: exceptions.HTTPException):
 
 SECRET = os.urandom(16).hex()
 
-NOTES = {f"Note {i}": f"This is note {i}" for i in range(1, 1000)}
+NOTES = {f"Note {i}": f"This is note {i}" for i in range(1, 100)}
 User = namedtuple('user', 'password notes', defaults=[NOTES])
 users: dict[str, User] = {}
 
@@ -57,7 +57,7 @@ def notes_route():
     index, count = map(int, get_fields('index', 'count'))
   except ValueError as e:
     raise exceptions.BadRequest(f"{e}")
-  return {'titles': list(get_notes())[index:index+count]}
+  return {'titles': list(get_notes())[::-1][index:index+count]}
 
 
 @app.route('/note', methods=['GET', 'PUT', 'DELETE'])
